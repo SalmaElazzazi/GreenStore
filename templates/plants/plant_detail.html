@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+{% block content %}
+{% load crispy_forms_tags %}
+<style>
+    .image-container img {
+        width: 100%; /* L'image prend 100% de la largeur du conteneur */
+        height: auto; /* Garde les proportions de l'image */
+        object-fit: cover; /* Ajuste l'image pour qu'elle couvre bien tout l'espace */
+        border-radius: 8px; /* Coins arrondis pour un meilleur design */
+    }
+
+    /* Ajustements pour les téléphones */
+    @media (max-width: 768px) {
+        .image-container img {
+            width: 100%; /* Assure que l'image reste à 100% de la largeur sur mobile */
+            height: auto; /* Maintient les proportions sur mobile */
+            object-fit: cover; /* Ajuste bien l'image pour ne pas qu'elle déborde */
+        }
+    }
+</style>
+<div class="page">
+    <div class="custom-margin container p-0 mt-5 mb-5">
+        <div class="plant-detail-content bg-white p-4 border border-light rounded-lg shadow">
+            <div class="breadcrumb-container mb-4">
+                <h2 class="breadcrumb-text">Home / Plants / {{ plant.name }}</h2>
+            </div>
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="image-container">
+                        <img src="{{ plant.image.url }}" alt="{{ plant.name }}" class="img-fluid rounded-lg shadow">
+                    </div>
+                </div>
+                <div class="col-md-5 plant-info">
+                    <br>
+                    <span class="badge badge-secondary mb-3">{{ plant.category.name }}</span>
+                    <h1 class="mb-4">{{ plant.name }}</h1>
+                    <p class="lead mb-4">{{ plant.description }}</p>
+
+                    <div class="price-shipping mb-4">
+                        <h2 class="price mb-0">${{ plant.price|floatformat:2 }}</h2>
+                        <span class="text-success shipping-text">+ Free Shipping</span>
+                    </div>
+                    <div class="d-flex align-items-center mb-4">
+                        <form action="{% url 'cart_add' plant.id %}" method="post" class="d-flex align-items-center">
+                            {% csrf_token %}
+                            <div class="input-group input-group-lg mr-3" style="width: 120px;">
+                                <input type="number" name="quantity" class="form-control text-center" value="1" min="1" max="{{ plant.stock }}">
+                            </div>
+                            <input type="hidden" name="override" value="False">
+                            <input type="submit" value="Add to Cart" class="btn btn-success btn-lg flex-grow-1">
+                        </form>
+                    </div>
+                    <div class="plant-details">
+                        <p class="category-text"><strong>Category:</strong> {{ plant.category.name }}</p>
+                    </div>            
+                    </div>
+                    <br>
+
+                </div>
+
+                <!-- Onglets Description et Review -->
+                <div class="mt-5">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link active" id="description-tab" data-bs-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="true">Description</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" id="review-tab" data-bs-toggle="tab" href="#review" role="tab" aria-controls="review" aria-selected="false">Review</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active p-3" id="description" role="tabpanel" aria-labelledby="description-tab">
+                            <br>
+                            <h1 class="contact-title" style=" color: #2e8b57;">{{plant.name }}</h1>
+                            <p>{{ plant.description|linebreaks }}</p>
+                            
+                            {% if plant.image_description %}
+                            <div class="image-container">
+                                <img src="{{ plant.image_description.url }}" alt="{{ plant.name }}" class="img-fluid">
+                            </div>               
+                            {% endif %}
+                            <br>
+                            <br>
+                            <h1 class="contact-title" style=" color: #2e8b57;">Related products</h1>
+    
+                            <div class="row justify-content-center mt-4">
+                                {% for plant in plants %}
+                                    <div class="col-12 col-md-4 col-lg-3 mb-4 px-2">
+                                        <div class="card plant-card" style="height: 400px; overflow: hidden;">
+                                            <a href="{% url 'detail' plant.pk %}">
+                                                <img src="{{ plant.image.url }}" class="card-img-top" alt="{{ plant.name }}" style="height: 200px; object-fit: cover;">
+                                            </a>
+                                            <div class="card-body text-center">
+                                                <a href="{% url 'detail' plant.pk %}" class="text-decoration-none text-black large-text">
+                                                    <h3 class="card-title" style="color: black; font-size: 1.1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                                        {{ plant.name }}
+                                                    </h3>
+                                                </a>
+                                                <p class="text-secondary" style="font-size: 0.9rem;">{{ plant.category.name }}</p>
+                                                <div class="price-container mb-2">
+                                                    <h5 class="price">${{ plant.price }}</h5>
+                                                    
+                                                </div>
+                                                <form action="{% url 'cart_add' plant.id %}" method="post" class="mt-2">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="quantity" value="1">
+                                                    <input type="hidden" name="override" value="False">
+                                                    <button type="submit" class="btn btn-success btn-sm add-to-cart-btn" style="font-size: 0.8rem;">
+                                                        <i class="fa-solid fa-cart-shopping"></i>
+                                                        <span class="cart-text">Add to Cart</span>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <!-- Review Case-->
+                        <div class="tab-pane fade p-3" id="review" role="tabpanel" aria-labelledby="review-tab">
+                            <!-- Review-->
+                            <div class="review-section container my-5">
+                                <h2 class="text-center mb-4">Customer Reviews {{reviews.count}}</h2>
+                            
+                                <!-- Existing Reviews -->
+                                <div class="existing-reviews mb-5" style="background-color: #f9fdf8;">
+                                    {% if reviews %}
+                                        {% for review in reviews %}
+                                            <div class="review-card p-4 rounded mb-3 shadow-sm">
+                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                    <h5 class="mb-0">{{ review.name }}</h5>
+                                                    <div class="star-rating">
+                                                        {% for i in "12345"|make_list %}
+                                                            {% if forloop.counter <= review.rating %}
+                                                                <i class="fas fa-star text-warning"></i>
+                                                            {% else %}
+                                                                <i class="far fa-star text-warning"></i>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                                <p class="text-muted mb-2">{{ review.created_at|date:"F d, Y" }}</p>
+                                                <p>{{ review.comment }}</p>
+                                            </div>
+                                        {% endfor %}
+                                    {% else %}
+                                        <p class="text-center text-muted">No reviews yet. Be the first to review this plant!</p>
+                                    {% endif %}
+                                </div>
+                            
+                                <!-- New Review Form -->
+                                <div class="new-review-form p-4 rounded shadow"  style="background-color: #f9fdf8;">
+                                    <h3 class="mb-4">Write a Review</h3>
+                                    <form method="post">
+                                        {% csrf_token %}
+                                        {% for field in review_form %}
+                                            <div class="mb-3">
+                                                {{ field.errors }}
+                                                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                                                {{ field }}
+                                            </div>
+                                        {% endfor %}
+                                        <button type="submit" class="btn btn-primary"  style="background-color: green;">Submit Review</button>
+                                    </form>
+                                </div>
+                            </div>
+                            </div>
+                            
+                            <style>
+                                .star-rating {
+                                    direction: rtl;
+                                    display: inline-block;
+                                }
+                            
+                                .star-rating input[type="radio"] {
+                                    display: none;
+                                }
+                            
+                                .star-rating label {
+                                    color: #bbb;
+                                    font-size: 1.5rem;
+                                    padding: 0;
+                                    cursor: pointer;
+                                    transition: all .3s ease-in-out;
+                                }
+                            
+                                .star-rating label:hover,
+                                .star-rating label:hover ~ label,
+                                .star-rating input[type="radio"]:checked ~ label {
+                                    color: #f2b600;
+                                }
+                            </style>
+                            
+                        </div>
+                </div>               
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

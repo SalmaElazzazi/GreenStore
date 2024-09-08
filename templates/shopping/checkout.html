@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block content %}
+{% load crispy_forms_tags %}
+{% load static %}
+<div class="page">
+    <div class="custom-margin container p-0 mt-5 mb-5">
+        <div class="plant-content bg-white p-4 border border-light p-5">
+            <div class="container my-5">
+                <h1 class="mb-4 bg-light p-3 mb-4" style=" color: #2e8b57;">Checkout
+                    <br>
+                </h1>
+                <hr style="border-top: 3px solid #2e8b57;">
+                <br>
+ 
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="row">
+                        <!-- Your Order Section (Left) -->
+                        <div class="col-md-5 order-md-2">
+                            <div class="border p-4 mb-5" style="border: 3px solid #2e8b57;">
+                                <h4>Your order</h4>
+                                <hr>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for item in cart %}
+                                            <tr>
+                                                <td>{{ item.plant.name }} × {{ item.quantity }}</td>
+                                                <td>${{ item.total_price }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        <tr>
+                                            <td>Subtotal</td>
+                                            <td>${{ cart.get_total_price }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Total</strong></td>
+                                            <td><strong>${{ cart.get_total_price }}</strong></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+
+                                <button type="submit" class="btn btn-success btn-block">Place Order</button>
+                            </div>
+                        </div>
+
+                        <!-- Billing Details Form (Right) -->
+                        <div class="col-md-7 order-md-1">
+                            <h4>Billing details</h4>
+                            <hr>
+                            {{ form|crispy }}
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

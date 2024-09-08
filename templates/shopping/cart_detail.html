@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+
+<div class="page">
+    <div class="container my-5">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h1 class="mb-4 bg-light p-3 mb-4" style=" color: #2e8b57;">Your Plant Cart
+                    <br>
+                </h1>
+                <hr style="border-top: 3px solid #2e8b57;">
+                <br>
+                <form method="post" action="{% url 'cart_update' %}">
+                    {% csrf_token %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in cart %}
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <form id="remove_{{ item.plant.id }}" action="{% url 'cart_remove' item.plant.id %}" method="post" class="mr-2">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                        <i class="fas fa-times"></i>
+                                                    </button>
+                                                </form>
+                                                {% if item.plant.image %}
+                                                    <img src="{{ item.plant.image.url }}" alt="{{ item.plant.name }}" class="img-thumbnail mr-2" style="width: 50px; height: 50px; object-fit: cover;">
+                                                {% endif %}
+                                                <span>{{ item.plant.name }}</span>
+                                            </div>
+                                        </td>
+                                        <td>${{ item.price }}</td>
+                                        <td>
+                                            <input type="number" name="quantity_{{ item.plant.id }}" value="{{ item.quantity }}" min="1" class="form-control form-control-sm" style="max-width: 70px;">
+                                        </td>
+                                        <td>${{ item.total_price }}</td>
+                                    </tr>
+                                {% empty %}
+                                    <tr>
+                                        <td colspan="4" class="text-center py-4">Your cart is empty. Why not add some lovely plants?</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="d-flex justify-content-end mt-3">
+                        <button type="submit" class="btn btn-outline-secondary">Update Cart</button>
+                    </div>
+                </form>
+                
+                <div class="row justify-content-end mt-4">
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <h3 class="card-title text-success">Cart Summary</h3>
+                                <p class="card-text">Total: ${{ cart.get_total_price }}</p>
+                                <a href="{% url 'checkout' %}" class="btn btn-success btn-block">Proceed to Checkout</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    @media (max-width: 767px) {
+        .table th, .table td {
+            padding: 0.5rem;
+        }
+        .table th {
+            font-size: 0.9rem;
+        }
+        .table td {
+            font-size: 0.8rem;
+        }
+        .img-thumbnail {
+            width: 40px !important;
+            height: 40px !important;
+        }
+        .btn-sm {
+            padding: 0.2rem 0.4rem;
+            font-size: 0.8rem;
+        }
+        .form-control-sm {
+            padding: 0.2rem 0.4rem;
+            font-size: 0.8rem;
+        }
+    }
+</style>
+
+{% endblock %}

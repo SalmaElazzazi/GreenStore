@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+
+<div class="page">
+    <div class="custom-margin container mt-5 mb-5">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <!-- Cart Details Section -->
+                <h2 class="text-success mb-4">Your Plant Cart</h2>
+
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in cart %}
+                                {% with plant=item.plant %}
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <!-- Remove Button -->
+                                            <form id="remove_{{ plant.id }}" action="{% url 'cart_remove' plant.id %}" method="post" class="d-inline-block">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-link text-danger mr-3">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </form>
+                                            
+                                            <!-- Plant Image -->
+                                            {% if plant.image %}
+                                                <img src="{{ plant.image.url }}" alt="{{ plant.name }}" width="100" class="mr-3">
+                                            {% endif %}
+                                            
+                                            <!-- Plant Name -->
+                                            <span>{{ plant.name }}</span>
+                                        </div>
+                                    </td>
+                                    
+                                    <!-- Plant Price -->
+                                    <td>${{ item.price }}</td>
+                                    
+                                    <!-- Quantity Input -->
+                                    <td>
+                                        <input type="number" name="quantity" value="{{ item.quantity }}" min="1" class="form-control" style="max-width: 70px;">
+                                    </td>
+                                    
+                                    <!-- Total Price -->
+                                    <td>${{ item.total_price }}</td>
+                                </tr>
+                                {% endwith %}
+                            {% empty %}
+                            
+                            <td colspan="4">Your cart is empty.</td>
+                                
+                            {% endfor %}
+                            
+
+                            </tbody>
+                        </table>
+                        
+                        <div class="row mt-4">
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Coupon code">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-success" type="button">Apply Coupon</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <button class="btn btn-light">Update Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Cart Summary Section -->
+                <div class="row justify-content-center mt-4">
+                    <div class="col-md-6">
+                        <div class="card border-success">
+                            <div class="card-body">
+                                <h3 class="card-title text-success">Cart Summary</h3>
+                                <p class="card-text">Total: ${{ cart.get_total_price }}</p>
+                                <a href="{% url 'checkout' %}" class="btn btn-success btn-block">Proceed to Checkout</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

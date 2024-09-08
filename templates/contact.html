@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block content %}
+{% load crispy_forms_tags %}
+{% load static %}
+<style>
+    body {
+        font-size: 20px; /* Taille de police globale */
+    }
+
+    .vertical-line {
+        border-left: 2px solid #dcdcdc;
+        height: 100%;
+    }
+
+    .contact-title {
+        font-size: 2.5rem;
+        font-weight: normal;
+        color: #28a745; /* Couleur verte pour "Contact Us" */
+    }
+
+    .message-title {
+        font-size: 1.8rem;
+        font-weight: normal;
+        color: #000; /* Couleur noire pour "Send us a message" */
+    }
+
+    .section-divider {
+        border-top: 2px solid #dcdcdc;
+        margin-bottom: 20px;
+    }
+
+    .full-screen-container {
+        max-width: 100%;
+        padding: 0 15px;
+    }
+
+    @media (min-width: 768px) {
+        .full-screen-container {
+            padding: 0 50px;
+        }
+    }
+
+    @media (min-width: 1200px) {
+        .full-screen-container {
+            padding: 0 100px;
+        }
+    }
+</style>
+<div class="page">
+    <div class="container my-5 full-screen-container">
+        <div class="row justify-content-center">
+            <div class="col-md-12 col-lg-10">
+                <div class="card shadow-sm border-0 rounded">
+                    <div class="card-body p-5">
+                        <div class="row align-items-start">
+                            <div class="col-md-5 mb-4 mb-md-0" style="line-height: 1.8;">
+                                <h1 class="contact-title" style=" color: #2e8b57;">Contact Us</h1>
+                                <hr class="section-divider">
+                                <p class="text-muted">
+                                    <i class="fas fa-map-marker-alt text-success"></i> Green Store<br>
+                                    <i class="fas fa-map-marker-alt text-success"></i> Fes, Morocco<br>
+                                    <i class="fas fa-phone text-success"></i> Phone: +212 123-456-7890<br>
+                                    <i class="fas fa-envelope text-success"></i> Email: <a href="mailto:info@greenstore.com" class="text-success">info@greenstore.com</a>
+                                </p>
+                                <img src="{% static 'images/67.png' %}" alt="Contact Image" class="img-fluid mb-4">
+                            </div>
+
+                            <div class="col-md-1 d-none d-md-block">
+                                <div class="vertical-line"></div> <!-- Ligne verticale -->
+                            </div>
+
+                            <div class="col-md-6">
+                                <h2 class="message-title">Send us a message</h2>
+                                <hr class="section-divider">
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    {{ contact_form|crispy }}
+                                    <button type="submit" class="btn btn-lg btn-success btn-block mt-4">Send Message</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

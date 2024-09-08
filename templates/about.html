@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+<div class="page">
+
+    <div class="custom-margin container-fluid p-0 mt-5 mb-5">
+        <div class="plant-content bg-white p-4 border border-light p-5">
+            <div class="row mb-5">
+                <div class="col-md-5">
+                    <h1 style="font-size: 5rem; font-weight: normal; color: #2e8b57;">About</h1>
+                </div>
+                <div class="col-md-7">
+                    <br>
+                    <hr style="border-top: 3px solid #2e8b57;">
+                    <h2 style="font-size: 2rem; color: #4a4a4a;">We provide fresh and healthy plants for your space</h2>
+                    <p class="text-secondary" style="font-size: 1.4rem; line-height: 1.6;">
+                        Tincidunt ut pellentesque arcu molestie dolor, nunc feugiat sit mauris semper platea urna, 
+                        sapien fermentum venenatis etiam enim ullamcorper phasellus tortor justo sapien faucibus in 
+                        adipiscing risus adipiscing bibendum nec eget tincidunt sed.             
+                    </p>
+                </div>
+            </div>
+
+            <div class="video-container mb-5">
+                <div class="embed-responsive embed-responsive-21by9">
+                    <img class="embed-responsive-item" src="{% static 'images/about/first.jpg' %}" alt="Description de l'image" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>    
+            </div>
+
+            <div class="row mb-5">
+        
+                <div class="col-md-5">
+                    <h1 style="font-size: 5rem; font-weight: normal; color: #2e8b57;">Our Story</h1>
+                </div>
+                <div class="col-md-7">
+                    <br>
+                    <hr style="border-top: 3px solid #2e8b57;">
+                    <p class="text-secondary" style="font-size: 1.4rem; line-height: 1.6;">
+                        In a bustling city, a passionate gardener named Emma opened GreenStore, 
+                        a charming plant shop. With a love for greenery, she wanted to bring a 
+                        touch of nature to everyone's home. GreenStore quickly became known for
+                        its vibrant selection of plants and Emma's friendly advice. From tiny
+                        succulents to tall ferns, each plant was chosen with care. 
+                        As the shop grew, so did its community. Emma hosted workshops and shared 
+                        tips, helping people create their own little green havens. GreenStore wasn't
+                        just a place to buy plants; it was a place to find joy and inspiration.
+                        Emma's dream of spreading the beauty of plants came true with GreenStore,
+                        where every customer left with more than just a plant—they took home a piece of nature and a smile.
+                    </p>
+                </div>
+            </div>
+
+            <div class="image-gallery row mb-5">
+                <div class="col-md-4 mb-4">
+                    <img src="{% static 'images/about/6.jpg' %}" alt="Description de l'image 1" class="img-fluid rounded shadow-lg" style="width: 100%; height: 300px; object-fit: cover;">
+                </div>
+                <div class="col-md-4 mb-4">
+                    <img src="{% static 'images/about/5.jpg' %}" alt="Description de l'image 2" class="img-fluid rounded shadow-lg" style="width: 100%; height: 300px; object-fit: cover;">
+                </div>
+                <div class="col-md-4 mb-4">
+                    <img src="{% static 'images/about/4.jpg' %}" alt="Description de l'image 3" class="img-fluid rounded shadow-lg" style="width: 100%; height: 300px; object-fit: cover;">
+                </div>
+            </div>
+
+            <div class="image-gallery row">
+                <div class="col-md-4 mb-4">
+                    <img src="{% static 'images/about/3.jpg' %}" alt="Description de l'image 4" class="img-fluid rounded shadow-lg" style="width: 100%; height: 300px; object-fit: cover;">
+                </div>
+                <div class="col-md-4 mb-4">
+                    <img src="{% static 'images/about/2.jpg' %}" alt="Description de l'image 5" class="img-fluid rounded shadow-lg" style="width: 100%; height: 300px; object-fit: cover;">
+                </div>
+                <div class="col-md-4 mb-4">
+                    <img src="{% static 'images/about/1.jpg' %}" alt="Description de l'image 6" class="img-fluid rounded shadow-lg" style="width: 100%; height: 300px; object-fit: cover;">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+{% load crispy_forms_tags %}
+{% load static %}
+<div class="page">
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-8">
+                <div class="card shadow-sm">
+                    <div class="card-body p-5">
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <h2 class="mb-3 text-success">Log In to Your Account</h2>
+                                <hr>
+                                <p class="text-muted mb-4">Please enter your login information to access your account. Fields marked with * are required.</p>
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    {{ loginform|crispy }}
+                                    <button type="submit" class="btn btn-lg btn-block btn-success mt-4">Log In</button>
+                                </form>
+                                <p class="text-center mt-3">Don't have an account? <a href="{% url 'register' %}" class="text-success">Sign up here</a></p>
+                            </div>
+                            <div class="col-md-6 text-center">
+                                <img src="{% static 'images/99.png' %}" alt="Plant image" class="img-fluid mb-4">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

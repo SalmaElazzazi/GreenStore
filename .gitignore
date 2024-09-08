@@ -1,0 +1,16 @@
+# Python
+*.pyc
+__pycache__/
+db.sqlite3
+
+# Django static and media files
+static/
+media/
+
+# Environments
+.env
+venv/
+.env/
+
+# Ignore macOS system files
+.DS_Store

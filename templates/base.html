@@ -1,0 +1,111 @@
+{% load static %}
+<!DOCTYPE HTML>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/main2.css' %}">
+    <link rel="shortcut icon" href="{% static 'images/Logo1.png' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+</head>
+<body>
+    <div class="d-flex flex-column min-vh-100">
+        <header class="navbar-bg">
+            <nav class="navbar navbar-expand-lg">
+                <div class="container d-flex justify-content-between align-items-center">
+                    <!-- Align logo and brand name to the left -->
+                    <a class="navbar-brand d-flex align-items-center" href="#">
+                        <img src="{% static 'images/logo.png' %}" alt="logo store" width="40" height="32" class="me-2">
+                        <span class="navbar-brand-text">GREENSTORE</span>
+                    </a>
+                    <!-- Button for mobile view -->
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <!-- Align the rest of the navbar items to the right -->
+                    <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url "home" %}">Home</a>
+                            </li>  
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url "plants" %}">Plants</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url "about" %}">About</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url "contact" %}">Contact</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{%url "cart"%}"><i class="fa-solid fa-cart-shopping"></i></a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa-solid fa-user"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    {% if user.is_authenticated %}
+                                    <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                                    {% else %}
+                                    <li><a class="dropdown-item" href="{% url 'login' %}">Login</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'register' %}">Register</a></li>
+                                    {% endif %}
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        
+        <!-- Content -->
+        {% block content %}{% endblock %}
+
+        <!-- Footer -->
+        <footer class="bg_color mt-auto">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h5>Quick Links</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="{%url 'home'%}" class="text-light">Home</a></li>
+                            <li><a href="{%url 'plants'%}" class="text-light">Plants</a></li>
+                            <li><a href="{%url 'about'%}" class="text-light">About</a></li>
+                            <li><a href="{%url 'contact'%}" class="text-light">Contact</a></li>
+                            <li><a href="{%url 'register'%}" class="text-light">Inscription</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <h5>Social Links</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="#" class="text-light"><i class="fab fa-facebook"></i> Facebook</a></li>
+                            <li><a href="#" class="text-light"><i class="fab fa-twitter"></i> Twitter</a></li>
+                            <li><a href="#" class="text-light"><i class="fab fa-instagram"></i> Instagram</a></li>
+                            <li><a href="#" class="text-light"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <h5>Explore</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="#" class="text-light">Blog</a></li>
+                            <li><a href="#" class="text-light">Careers</a></li>
+                            <li><a href="#" class="text-light">Privacy Policy</a></li>
+                            <li><a href="#" class="text-light">Terms of Service</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="text-center py-3">
+                    &copy; 2023 My Website
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page">
+    <div class="custom-margin container p-0 mt-5 mb-5">
+        <div class="plant-content bg-white p-4 border border-light p-5">
+            <h3>Home/Plants</h3>
+
+            <div class="filter-container mb-4">
+                <form method="get" action="{% url 'plants' %}" id="category-form" class="filter-form">
+                    <select id="category" name="category" class="custom-select-width" onchange="document.getElementById('category-form').submit();">
+                        <option value="">All Categories</option>
+                        {% for category in categories %}
+                        <option value="{{ category.id }}" {% if request.GET.category == category.id|stringformat:"s" %}selected{% endif %}>{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                </form>
+
+                <form method="get" action="{% url 'plants' %}" class="filter-form">
+                    <select id="order_by" name="order_by" class="custom-select-width" onchange="this.form.submit();">
+                        <option value="" {% if not request.GET.order_by %}selected{% endif %}>Default Sorting</option>
+                        <option value="latest" {% if request.GET.order_by == 'latest' %}selected{% endif %}>Sort by Latest</option>
+                        <option value="lowtohigh" {% if request.GET.order_by == 'lowtohigh' %}selected{% endif %}>Sort: Low to High</option>
+                        <option value="hightolow" {% if request.GET.order_by == 'hightolow' %}selected{% endif %}>Sort: High to Low</option>
+                    </select>
+                </form>
+            </div>
+
+            <div class="row justify-content-center mt-4">
+                {% if plants %}
+                    {% for plant in plants %}
+                    <div class="col-6 col-md-6 col-lg-4 mb-4 px-2">
+                        <div class="card plant-card">
+                            <a href="{% url 'detail' plant.pk %}">
+                                <img src="{{ plant.image.url }}" class="card-img-top" alt="{{ plant.name }}">
+                            </a>
+                            <div class="card-body text-center">
+                                <a href="{% url 'detail' plant.pk %}" class="text-decoration-none text-black large-text">
+                                    <h3 class="card-title" style="color: black;">{{ plant.name }}</h3>
+                                </a>
+                                <p class="text-secondary">{{ plant.category.name }}</p>
+                                <div class="price-container mb-2">
+                                    <h5 class="price">${{ plant.price }}</h5>
+                                </div>
+                                <form action="{% url 'cart_add' plant.id %}" method="post" class="mt-2">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="quantity" value="1">
+                                    <input type="hidden" name="override" value="False">
+                                    <button type="submit" class="btn btn-success btn-sm add-to-cart-btn">
+                                        <i class="fa-solid fa-cart-shopping"></i>
+                                        <span class="cart-text">Add to Cart</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No plants available in this category.</p>
+                {% endif %}
+                {% include "plants/pagination.html" with page=plants %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
